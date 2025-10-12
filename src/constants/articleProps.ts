@@ -175,5 +175,11 @@ export const defaultArticleState = {
 	contentWidth: contentWidthArr[0],
 	fontSizeOption: fontSizeOptions[0],
 };
-
+export type ArticleState = {
+	fontFamilyOption: (typeof fontFamilyOptions)[number];
+	fontColor: (typeof fontColors)[number];
+	backgroundColor: (typeof backgroundColors)[number];
+	contentWidth: (typeof contentWidthArr)[number];
+	fontSizeOption: (typeof fontSizeOptions)[number];
+};
 export type ArticleStateType = typeof defaultArticleState;
