@@ -30,7 +30,7 @@ export const ArticleParamsForm = ({
 	onApply,
 }: ArticleParamsFormProps) => {
 	const [localDraft, setLocalDraft] = useState(articleState);
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const handleChange = (fieldName: keyof ArticleState, value: OptionType) => {
 		setLocalDraft((prev) => ({
@@ -46,14 +46,26 @@ export const ArticleParamsForm = ({
 	return (
 		<>
 			<ArrowButton
-				isOpen={isOpen}
+				isOpen={isMenuOpen}
 				onClick={() => {
-					setIsOpen(!isOpen);
+					setIsMenuOpen(!isMenuOpen);
 				}}
 			/>
 			<aside
-				className={clsx(styles.container, { [styles.container_open]: isOpen })}>
-				<form className={styles.form}>
+				className={clsx(styles.container, {
+					[styles.container_open]: isMenuOpen,
+				})}>
+				<form
+					className={styles.form}
+					onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+						event.preventDefault();
+						onApply(localDraft);
+					}}
+					onReset={(event: React.FormEvent<HTMLFormElement>) => {
+						event.preventDefault();
+						setLocalDraft(defaultArticleState);
+						onApply(defaultArticleState);
+					}}>
 					<div>
 						<Text
 							as={'h2'}
@@ -109,25 +121,8 @@ export const ArticleParamsForm = ({
 						<Spacing size={207} />
 					</div>
 					<div className={styles.bottomContainer}>
-						<Button
-							title='Сбросить'
-							htmlType='reset'
-							type='clear'
-							onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-								event.preventDefault();
-								setLocalDraft(defaultArticleState);
-								onApply(defaultArticleState);
-							}}
-						/>
-						<Button
-							title='Применить'
-							htmlType='submit'
-							type='apply'
-							onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-								event.preventDefault();
-								onApply(localDraft);
-							}}
-						/>
+						<Button title='Сбросить' htmlType='reset' type='clear' />
+						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
 				</form>
 			</aside>
